@@ -1,0 +1,46 @@
+#######################################
+# Syntax Coloring Map For debug_lvc
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+ESP32_CAN       KEYWORD1
+esp32_can       KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+begin         KEYWORD2
+sendMsgBuf    KEYWORD2
+readMsgBuf    KEYWORD2
+checkReceive	KEYWORD2
+checkError    KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+CAN_25KBPS          LITERAL1
+CAN_50KBPS          LITERAL1
+CAN_80KBPS          LITERAL1
+CAN_100KBPS         LITERAL1
+CAN_125KBPS         LITERAL1
+CAN_250KBPS         LITERAL1
+CAN_500KBPS         LITERAL1
+CAN_800KBPS         LITERAL1
+CAN_1000KBPS        LITERAL1
+ESP32_STD             LITERAL1
+ESP32_EXT             LITERAL1
+CAN_OK              LITERAL1
+CAN_FAILINIT        LITERAL1
+CAN_FAILTX          LITERAL1
+CAN_MSGAVAIL        LITERAL1
+CAN_NOMSG           LITERAL1
+CAN_CTRLERROR       LITERAL1
+CAN_GETTXBFTIMEOUT  LITERAL1
+CAN_SENDMSGTIMEOUT  LITERAL1
+CAN_FAIL            LITERAL1
+ESP32_NORMAL          LITERAL1
+ESP32_SLEEP           LITERAL1
+ESP32_LOOPBACK        LITERAL1
+ESP32_LISTENONLY      LITERAL1
