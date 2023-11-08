@@ -1,0 +1,187 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="UTF-8">
+	<title>차량 정보</title>
+	<style>
+		div.mar {
+			margin-top: -40px;
+			margin-left: 160px;
+		}
+		div.map {
+			margin-top: 10px;
+		}
+	</style>
+	<style type="text/css">
+		ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			background-color: #333;
+		}
+		ul:after{
+			content:'';
+			display: block;
+			clear:both;
+		}
+		li {
+			float: left;
+		}
+		li a {
+			display: block;
+			color: white;
+			text-align: center;
+			padding: 14px 16px;
+			text-decoration: none;
+		}
+		li a:hover:not(.active) {
+			background-color: #111;
+		}
+		.active {
+			background-color: #4CAF50;
+		}
+		#RPM {
+			float:left;
+			width:50%;
+			height:50%;
+			background-Color:#F2FFFF;
+		}
+		#SPEED {
+			clear:right;
+			float:right;
+			width:50%;
+			height:50%;
+			background-Color:#FFF2FF;
+		}
+		#Distance {
+			float:left;
+			width:50%;
+			height:50%;
+			background-Color:#FFFFF2;
+		}
+		#Eng_tmp {
+			clear:right;
+			float:right;
+			width:50%;
+			height:50%;
+			background-Color:#EFEFEF;
+		}
+	</style>
+	<script type="text/javascript">
+		<!-- 숫자가 카운터 형식으로 올라가게 해주는 함수 -->
+		function numberCounter(target_frame, target_number) {
+			this.count = 0; this.diff = 0;
+		    	this.target_count = parseInt(target_number);
+		    	this.target_frame = document.getElementById(target_frame);
+		    	this.timer = null;
+		    	this.counter();
+		};
+		numberCounter.prototype.counter = function() {
+		    	var self = this;
+		    	this.diff = this.target_count - this.count;
+		    	if(this.diff > 0) {
+		        	self.count += Math.ceil(this.diff / 5);
+		    	}
+		    	this.target_frame.innerHTML = this.count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		    	if(this.count < this.target_count) {
+		        	this.timer = setTimeout(function() { self.counter(); }, 20);
+		    	}
+			else {
+				clearTimeout(this.timer);
+		    	}
+		};
+		<!--파싱해서 받은 데이터들을 통해 웹페이지에 알맞은 텍스트 출력하는 함수들-->
+		function IGN_f(num){
+			if(num == 1)
+				$('#message').text("ON");
+			else
+				$('#message').text("OFF");
+		};
+		function RPM_f(num){
+			new numberCounter("counter1",num);
+		};
+		function SPEED_f(num){
+			new numberCounter("counter2",num);
+		};
+		function Distance_f(num){
+			new numberCounter("counter3",num);
+		};
+		function Engine_f(num){
+			new numberCounter("counter4",num);
+		};
+	</script>
+	<script>
+        window.onload = function() {
+                document.getElementById('execute').click();
+        }
+	</script>
+	<script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    </head>
+<body topmargin="0" leftmargin="0">
+        <div id="choice">
+        	<ul>
+        	        <li><img src="Team_logo.jpg" alt="이미지 없음" style="height: 40px; width: auto;"></li>
+        	        <li><a class="active" href="#home">Main</a></li>
+        	        <li><a href="http://180.71.2.76:3390\statistics.html" target="_self">그래프 통계</a></li>
+        	        <li><a href="http://180.71.2.76:3390\exchange.html" target="_self">차량 부품 교체 정보</a></li>
+        	        <li><a href="http://180.71.2.76:3390\error.php" target="_self">고장정보</a></li>
+        	</ul>
+        </div>
+        <div id="IGN">
+        	<h1>IGN : <a id="output"></a>
+        		<script type="text/javascript">
+				var timerID;
+				$(document).ready(function () {
+				    $("#execute").on('click',function(e){<!--html 태그중 id가 excute인 속성을 클릭해라-->
+				        e.preventDefault();
+				        updateData();<!--Data update-->
+				    });
+				});
+				function updateData(){ 
+				<!--Ajax 시작 -->
+					$.ajax({
+						url: "DB_json.php", <!--데이터를 load하기 위한 php페이지 불러오기--> 
+				        	type: "post",<!--전송방식은 post-->
+						async: false,
+				      		success: function(data){ 
+					       		data = JSON.parse(data);<!--DB_json.php로 받아온 data는 json 형식이기 때문에, 이를 parsing-->
+							<!--실시간 값 변화를 나타내기 위해 파싱된 데이터를 각 함수에 할당-->
+							IGN_f(data.IGN);
+							RPM_f(data.RPM);
+							SPEED_f(data.V);
+							Distance_f(data.D);
+							Engine_f(data.Eng_temp);
+				      		}
+					});
+					timerID = setTimeout("updateData()", 1000);<!--1초간격으로 ajax실행--> 
+				}
+        		</script>
+			<a><span id="message"></span></a>
+        	</h1>
+        </div>
+	
+	<div id='RPM'>
+		<p><b>RPM</b>(단위:rpm)</p>
+			<p id="counter1" style="font-size:5em;"></p>
+        </div>
+
+        <div id="SPEED">
+        	<p><b>SPEED</b>(단위:km/h)</p>
+        		<p id="counter2" style="font-size:5em;"></p>
+        </div>
+
+        <div id="Distance">
+        	<p><b>Distance</b>(단위:km)</p>
+        		<p id="counter3" style="font-size:5em;"></p>
+        </div>
+
+        <div id="Eng_tmp">
+        	<p><b>Engine temperature</b></p>
+        		<p id="counter4" style="font-size:5em;"></p>
+        </div>
+        <hr>
+	<input type="hidden" id="execute" value="실행" />
+        <p style="font-size:0.8em; line-height:50%;">제작팀:CAN</p>
+        <p style="font-size:0.8em; line-height:50%;">제작자:정홍석</p>
+</body>
+</html>

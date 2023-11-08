@@ -1,0 +1,489 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="UTF-8">
+	<title>차량 정보</title>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+	<style>
+		div.mar {
+			margin-top: -40px;
+			margin-left: 160px;
+		}
+		div.map {
+			margin-top: 10px;
+		}
+	</style>
+	<style type="text/css">
+		ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			background-color: #333;
+		}
+		ul:after{
+			content:'';
+			display: block;
+			clear:both;
+		}
+		li {
+			float: left;
+		}
+		li a {
+			display: block;
+			color: white;
+			text-align: center;
+			padding: 14px 16px;
+			text-decoration: none;
+		}
+		li a:hover:not(.active) {
+			background-color: #111;
+		}
+		.active {
+			background-color: #4CAF50;
+		}
+		#RPM_text {
+			position:absolute;
+			left:100px;
+			background-color: green;
+		}
+		#RPM {
+			float:left;
+			width:50%;
+			height:50%;
+			background-Color:#F2FFFF;
+		}
+		#SPEED_text {
+			position:absolute;
+			left:300px;
+			background-color: yellow;
+		}
+		#SPEED {
+			clear:right;
+			float:right;
+			width:50%;
+			height:50%;
+			background-Color:#FFF2FF;
+		}
+		#Distance {
+			float:left;
+			width:50%;
+			height:50%;
+			background-Color:#FFFFF2;
+		}
+		#Eng_tmp {
+			clear:right;
+			float:right;
+			width:50%;
+			height:50%;
+			background-Color:#EFEFEF;
+		}
+		#Rapid_accel {
+			clear:left;
+			float:left;
+			width:50%;
+			height:50%;
+			background-Color:#EFEFEF;
+		}
+		#Rapid_decel {
+			clear:right;
+			float:right;
+			width:50%;
+			height:50%;
+			background-Color:#EFEFEF;
+		}
+	</style>
+	<script>
+		function IGN_f(num){
+                        if(num == 1)
+                                $('#message').text("ON");
+                        else
+                                $('#message').text("OFF");
+                };
+		<!--RPM 차트 생성을 위한 초기화 함수-->
+                function RPM_cg(d_num,num){
+			var DT_array = new Array();
+			var RPM_array = new Array();
+			DT_array[0] =  d_num[0];
+			DT_array[1] =  d_num[1];
+			DT_array[2] =  d_num[2];
+			DT_array[3] =  d_num[3];
+			DT_array[4] =  d_num[4];
+			DT_array[5] =  d_num[5]
+			DT_array[6] =  d_num[6];
+			RPM_array[0] = num[0];
+			RPM_array[1] = num[1];
+			RPM_array[2] = num[2];
+			RPM_array[3] = num[3];
+			RPM_array[4] = num[4];
+			RPM_array[5] = num[5];
+			RPM_array[6] = num[6];
+			var data = {
+					labels : [DT_array[0],DT_array[1],DT_array[2],DT_array[3],DT_array[4],DT_array[5],DT_array[6]],
+					datasets: [{
+						label: 'Average RPM',
+						data: [RPM_array[0],RPM_array[1],RPM_array[2],RPM_array[3],RPM_array[4],RPM_array[5],RPM_array[6]],
+						backgroundColor: [
+							'rgba(255, 99, 132, 0.2)',
+							'rgba(54, 162, 235, 0.2)',
+							'rgba(255, 206, 86, 0.2)',
+							'rgba(75, 192, 192, 0.2)',
+							'rgba(153, 102, 255, 0.2)',
+							'rgba(153, 102, 255, 0.2)',
+							'rgba(153, 102, 255, 0.2)'
+						],
+						borderColor: [
+							'rgba(255, 99, 132, 0.2)',
+							'rgba(54, 162, 235, 0.2)',
+							'rgba(255, 206, 86, 0.2)',
+							'rgba(75, 192, 192, 0.2)',
+							'rgba(153, 102, 255, 0.2)',
+							'rgba(153, 102, 255, 0.2)',
+							'rgba(153, 102, 255, 0.2)'
+						],
+						borderWidth: 1
+					}]
+			};
+
+			var options = {
+				scales: {
+					yAxex: [{
+						ticks: {
+							beginAtZero:true
+						}
+					}]
+				}
+			}
+
+			var ctx = document.getElementById("RPM_chart");
+			var myChart = new Chart(ctx, {
+				type: 'line',
+				data: data,
+				options: options
+			});
+                };
+		<!--V 차트 생성을 위한 초기화 함수-->
+                function V_cg(d_num,num){
+			var data = {
+					labels : [d_num[0],d_num[1],d_num[2],d_num[3],d_num[4],d_num[5],d_num[6]],
+					datasets: [{
+						label: 'Average SPEED',
+						data: [num[0],num[1],num[2],num[3],num[4],num[5],num[6]],
+						backgroundColor: [
+							'rgba(255, 99, 132, 0.2)',
+							'rgba(54, 162, 235, 0.2)',
+							'rgba(255, 206, 86, 0.2)',
+							'rgba(75, 192, 192, 0.2)',
+							'rgba(153, 102, 255, 0.2)',
+							'rgba(153, 102, 255, 0.2)',
+							'rgba(153, 102, 255, 0.2)'
+						],
+						borderColor: [
+							'rgba(255, 99, 132, 0.2)',
+							'rgba(54, 162, 235, 0.2)',
+							'rgba(255, 206, 86, 0.2)',
+							'rgba(75, 192, 192, 0.2)',
+							'rgba(153, 102, 255, 0.2)',
+							'rgba(153, 102, 255, 0.2)',
+							'rgba(153, 102, 255, 0.2)'
+						],
+						borderWidth: 1
+					}]
+				}
+
+			var options = {
+				scales: {
+					yAxex: [{
+						ticks: {
+							beginAtZero:true
+						}
+					}]
+				}
+			}
+
+			var ctx = document.getElementById("SPEED_chart");
+			var myChart = new Chart(ctx, {
+				type: 'line',
+				data: data,
+				options: options
+			});
+                };
+		<!--D 차트 생성을 위한 초기화 함수-->
+                function D_cg(d_num,num){
+			var data = {
+					labels : [d_num[0],d_num[1],d_num[2],d_num[3],d_num[4],d_num[5],d_num[6]],
+					datasets: [{
+						label: 'Total Distace',
+						data: [num[0],num[1],num[2],num[3],num[4],num[5],num[6]],
+						backgroundColor: [
+							'rgba(255, 99, 132, 0.2)',
+							'rgba(54, 162, 235, 0.2)',
+							'rgba(255, 206, 86, 0.2)',
+							'rgba(75, 192, 192, 0.2)',
+							'rgba(153, 102, 255, 0.2)',
+							'rgba(153, 102, 255, 0.2)',
+							'rgba(153, 102, 255, 0.2)'
+						],
+						borderColor: [
+							'rgba(255, 99, 132, 0.2)',
+							'rgba(54, 162, 235, 0.2)',
+							'rgba(255, 206, 86, 0.2)',
+							'rgba(75, 192, 192, 0.2)',
+							'rgba(153, 102, 255, 0.2)',
+							'rgba(153, 102, 255, 0.2)',
+							'rgba(153, 102, 255, 0.2)'
+						],
+						borderWidth: 1
+					}]
+				}
+
+			var options = {
+					scales: {
+						yAxex: [{
+							ticks: {
+								beginAtZero:true
+							}
+						}]
+					}
+				}
+
+
+			var ctx = document.getElementById("Distance_chart");
+			var myChart = new Chart(ctx, {
+				type: 'line',
+				data: data,
+				options: options
+			});
+                };
+		<!--Engine_temp 차트 생성을 위한 초기화 함수-->
+                function et_cg(d_num,num){
+			var data = {
+					labels : [d_num[0],d_num[1],d_num[2],d_num[3],d_num[4],d_num[5],d_num[6]],
+					datasets: [{
+						label: 'Average Temperature',
+						data: [num[0],num[1],num[2],num[3],num[4],num[5],num[6]],
+						backgroundColor: [
+							'rgba(255, 99, 132, 0.2)',
+							'rgba(54, 162, 235, 0.2)',
+							'rgba(255, 206, 86, 0.2)',
+							'rgba(75, 192, 192, 0.2)',
+							'rgba(153, 102, 255, 0.2)',
+							'rgba(153, 102, 255, 0.2)',
+							'rgba(153, 102, 255, 0.2)'
+						],
+						borderColor: [
+							'rgba(255, 99, 132, 0.2)',
+							'rgba(54, 162, 235, 0.2)',
+							'rgba(255, 206, 86, 0.2)',
+							'rgba(75, 192, 192, 0.2)',
+							'rgba(153, 102, 255, 0.2)',
+							'rgba(153, 102, 255, 0.2)',
+							'rgba(153, 102, 255, 0.2)'
+						],
+						borderWidth: 1
+					}]
+				}
+
+			var options = {
+					scales: {
+						yAxex: [{
+							ticks: {
+								beginAtZero:true
+							}
+						}]
+					}
+				}
+
+			var ctx = document.getElementById("Eng_chart");
+			var myChart = new Chart(ctx, {
+				type: 'bar',
+				data: data,
+				options: options
+			});
+                };
+		<!--급가속 차트 생성을 위한 초기화 함수-->
+                function up_cg(d_num,num){
+			var data = {
+				labels : [d_num[0],d_num[1],d_num[2],d_num[3],d_num[4],d_num[5],d_num[6]],
+				datasets: [{
+					label: 'Daily Rapid Acceleration',
+					data: [num[0],num[1],num[2],num[3],num[4],num[5],num[6]],
+					backgroundColor: [
+						'rgba(255, 99, 132, 0.2)',
+						'rgba(54, 162, 235, 0.2)',
+						'rgba(255, 206, 86, 0.2)',
+						'rgba(75, 192, 192, 0.2)',
+						'rgba(153, 102, 255, 0.2)',
+						'rgba(153, 102, 255, 0.2)',
+						'rgba(153, 102, 255, 0.2)'
+					],
+				borderColor: [
+						'rgba(255, 99, 132, 0.2)',
+						'rgba(54, 162, 235, 0.2)',
+						'rgba(255, 206, 86, 0.2)',
+						'rgba(75, 192, 192, 0.2)',
+						'rgba(153, 102, 255, 0.2)',
+						'rgba(153, 102, 255, 0.2)',
+						'rgba(153, 102, 255, 0.2)'
+					],
+				borderWidth: 1
+				}]
+			}
+
+			var options = {
+					scales: {
+						yAxex: [{
+							ticks: {
+								beginAtZero:true
+							}
+						}]
+					}
+				}
+
+
+			var ctx = document.getElementById("accel_chart");
+			var myChart = new Chart(ctx, {
+				type: 'bar',
+				data: data,
+				options: options
+			});
+                };
+		<!--급감속 차트 생성을 위한 초기화 함수-->
+                function down_cg(d_num,num){
+			var data = {
+			labels : [d_num[0],d_num[1],d_num[2],d_num[3],d_num[4],d_num[5],d_num[6]],
+			datasets: [{
+				label: 'Daily Rapid Deceleration',
+				data: [num[0],num[1],num[2],num[3],num[4],num[5],num[6]],
+				backgroundColor: [
+					'rgba(255, 99, 132, 0.2)',
+					'rgba(54, 162, 235, 0.2)',
+					'rgba(255, 206, 86, 0.2)',
+					'rgba(75, 192, 192, 0.2)',
+					'rgba(153, 102, 255, 0.2)',
+					'rgba(153, 102, 255, 0.2)',
+					'rgba(153, 102, 255, 0.2)'
+				],
+				borderColor: [
+					'rgba(255, 99, 132, 0.2)',
+					'rgba(54, 162, 235, 0.2)',
+					'rgba(255, 206, 86, 0.2)',
+					'rgba(75, 192, 192, 0.2)',
+					'rgba(153, 102, 255, 0.2)',
+					'rgba(153, 102, 255, 0.2)',
+					'rgba(153, 102, 255, 0.2)'
+				],
+				borderWidth: 1
+			}]
+			}
+
+			var options = {
+					scales: {
+						yAxex: [{
+							ticks: {
+								beginAtZero:true
+							}
+						}]
+					}
+				}
+
+
+			var ctx = document.getElementById("decel_chart");
+			var myChart = new Chart(ctx, {
+				type: 'bar',
+				data: data,
+				options: options
+			});
+                };
+	</script>
+	<script>
+	        window.onload = function() {
+	                document.getElementById('execute').click();
+	        }
+        </script>
+        <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    </head>
+<body topmargin="0" leftmargin="0">
+<div id="choice">
+	<ul>
+	 <li><img src="Team_logo.jpg" alt="이미지 없음" style="height: 40px; width: auto;"></li>
+	 <li><a href="http://180.71.2.76:3390\main.html" target="_self">Main</a></li>
+	 <li><a class="active" href="http://180.71.2.76:3390\statistics.html" target="_self">그래프 통계</a></li>
+	 <li><a href="http://180.71.2.76:3390\exchange.html" target="_self">차량 부품 교체 정보</a></li>
+	 <li><a href="http://180.71.2.76:3390\error.php" target="_self">고장정보</a></li>
+	</ul>
+</div>
+
+<div id="IGN">
+	<h1>IGN : <a id="output"></a>
+		<script type="text/javascript">
+                	var timerID;
+                        $(document).ready(function () {
+                        	$("#execute").on('click',function(e){
+                        		e.preventDefault();
+                                        updateData();
+                                });
+                        });
+                        function updateData(){
+			<!--ajax 시작-->
+                                $.ajax({
+                                        url: "statistics_data_json.php", <!--통계 페이지를 위한 데이터 불러오는 php 로드-->
+                                        type: "post",<!--전송방식-->
+                                        async: false,
+                                        success: function(data){
+                                        	data = JSON.parse(data);<!--데이터 파싱-->
+						<!--차트를 그리기 위한 데이터 초기화-->
+                                                IGN_f(data.IGN);
+						RPM_cg(data.DT,data.ar);
+						V_cg(data.DT,data.av);
+						D_cg(data.DT,data.ad);
+						et_cg(data.DT,data.aet);
+						up_cg(data.DT_stat,data.up_cnt);
+						down_cg(data.DT_stat,data.down_cnt);
+                                        }
+                                });
+				<!--10초마다 차트 데이터 갱신-->
+                                timerID = setTimeout("updateData()", 10000);
+                        }
+                </script>
+                <a><span id="message"></span></a>
+	</h1>
+</div>
+
+
+<div id="RPM">
+<p><b>RPM</b></p>
+<!--차트 생성-->
+<canvas id="RPM_chart"></canvas>
+</div>
+<!--차트 생성-->
+<div id="SPEED">
+<p><b>SPEED</b></p>
+<canvas id="SPEED_chart"></canvas>
+</div>
+<!--차트 생성-->
+<div id="Distance">
+<p><b>Distance</b></p>
+<canvas id="Distance_chart"></canvas>
+</div>
+<!--차트 생성-->
+<div id="Eng_tmp">
+<p><b>Engine temperature</b></p>
+<canvas id="Eng_chart"></canvas>
+</div>
+<!--차트 생성-->
+<div id="Rapid_accel">
+<p><b>Rapid acceleration</b></p>
+<canvas id="accel_chart"></canvas>
+</div>
+<!--차트 생성-->
+<div id="Rapid_decel">
+<p><b>Rapid Deceleration</b></p>
+<canvas id="decel_chart"></canvas>
+</div>
+
+<hr>
+<input type="hidden" id="execute" value="실행" />
+<p style="font-size:0.8em; line-height:50%;">제작팀:CAN</p>
+<p style="font-size:0.8em; line-height:50%;">제작자:정홍석</p>
+</body>
+</html>
