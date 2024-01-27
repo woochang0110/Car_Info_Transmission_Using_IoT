@@ -3,7 +3,7 @@
 
 
 아래 사진을 누르면 발표자료 페이지로 이동합니다.
-[![Project Presentation](main/MeetingMinute/presentation_thumbnail.png)](main/MeetingMinute/IoT를 이용한 차량정보 전송 및 활용_설계서.pdf)<br>
+[![Project Presentation](main/MeetingMinute/presentation_thumbnail.png)](main/MeetingMinute/IoT를_이용한_차량정보_전송_및_활용_설계서.pdf)<br>
 <br>
 
 아래 사진을 누르면 프로젝트 개요서 페이지로 이동합니다.
