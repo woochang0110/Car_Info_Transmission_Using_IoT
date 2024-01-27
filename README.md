@@ -1,7 +1,5 @@
 # Car_Info_Transmission_Using_IoT
----
-
-IoT를 이용한 차량 정보 전송 및 활용
+## IoT를 이용한 차량 정보 전송 및 활용
 
 아래 사진을 누르면 발표자료 다운로드 페이지로 이동합니다.
 [![Project Presentation](main/MeetingMinute/presentation_thumbnail.png)](main/MeetingMinute/SW개발_HW제작설계서_일반_최종_.pptx)<br>
